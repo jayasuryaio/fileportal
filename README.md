@@ -9,7 +9,7 @@ A small full-stack web app: **sign up → log in → upload / download files**.
 | Frontend  | Server-rendered Jinja templates + plain CSS/JS           |
 | Hosting   | Railway (app + MySQL plugin + persistent volume)         |
 
-- **Live app:** `<DEPLOYED_URL>`
+- **Live app:** https://fileportal-production.up.railway.app
 - **Repository:** `<GITHUB_URL>`
 
 ---
