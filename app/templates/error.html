@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_icons.html" import logo %}
+{% block title %}{{ title }} · FilePortal{% endblock %}
+{% block body %}
+<main class="auth-page">
+  <section class="card auth-card center">
+    {{ logo() }}
+    <h1 class="auth-title">{{ code }}</h1>
+    <p><strong>{{ title }}</strong></p>
+    <p class="muted">{{ message }}</p>
+    <a class="btn btn-primary" href="{{ url_for('auth.index') }}">Back to home</a>
+  </section>
+</main>
+{% endblock %}

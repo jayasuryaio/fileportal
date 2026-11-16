@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "_icons.html" import logo, field %}
+{% block title %}Login · FilePortal{% endblock %}
+{% block body %}
+<main class="auth-page">
+  <section class="card auth-card">
+    {{ logo() }}
+    <h1 class="auth-title">Welcome back</h1>
+    <p class="muted">Login to access your dashboard.</p>
+    {% include "_flash.html" %}
+    <form method="post" action="{{ url_for('auth.login') }}" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {{ field('email', 'Email', 'mail', type='email', value=email, autocomplete='email') }}
+      {{ field('password', 'Password', 'lock', type='password', autocomplete='current-password') }}
+      <button class="btn btn-primary btn-block" type="submit">Login</button>
+    </form>
+    <p class="auth-switch">New here? <a href="{{ url_for('auth.signup') }}">Create an account</a></p>
+  </section>
+</main>
+{% endblock %}

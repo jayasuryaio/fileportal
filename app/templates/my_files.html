@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "_files_table.html" import files_table %}
+{% block title %}My Files · FilePortal{% endblock %}
+{% block body %}
+{% include "_nav.html" %}
+<main class="container">
+  <h1 class="page-title">My Files</h1>
+  <p class="muted">Everything you have uploaded, newest first.</p>
+  {% include "_flash.html" %}
+  {{ files_table(files, 'files') }}
+</main>
+{% endblock %}

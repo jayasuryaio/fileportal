@@ -1,0 +1,33 @@
+{% from "_icons.html" import icon %}
+{% macro files_table(files, return_to='dashboard') %}
+<div class="table-card">
+  <table class="files">
+    <thead><tr><th>#</th><th>Filename</th><th>Type</th><th>Uploaded On</th><th class="col-actions"><span class="sr-only">Actions</span></th></tr></thead>
+    <tbody>
+    {% for f in files %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td class="fname">{{ icon('image' if f.file_type != 'PDF' else 'file', 22) }}<span title="{{ f.original_filename }}">{{ f.stored_filename }}</span></td>
+        <td><span class="badge">{{ f.file_type }}</span></td>
+        <td>{{ f.uploaded_at|localtime }}</td>
+        <td class="col-actions">
+          <div class="row-menu">
+            <button class="icon-btn" type="button" aria-label="File actions" aria-expanded="false">{{ icon('more') }}</button>
+            <div class="menu" hidden>
+              <a class="menu-item" href="{{ url_for('files.download_file', file_id=f.id) }}">{{ icon('download', 16) }} Download</a>
+              <form method="post" action="{{ url_for('files.delete_file', file_id=f.id) }}" data-confirm="Delete this file permanently?">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="return_to" value="{{ return_to }}">
+                <button class="menu-item danger" type="submit">{{ icon('trash', 16) }} Delete</button>
+              </form>
+            </div>
+          </div>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="empty">No files uploaded yet.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}

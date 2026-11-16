@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "_icons.html" import logo, field %}
+{% block title %}Sign up · FilePortal{% endblock %}
+{% block body %}
+<main class="auth-page">
+  <section class="card auth-card">
+    {{ logo() }}
+    <h1 class="auth-title">Create an account</h1>
+    <p class="muted">Sign up to upload and manage your files.</p>
+    {% if errors.form %}<div class="flash error">{{ errors.form }}</div>{% endif %}
+    <form method="post" action="{{ url_for('auth.signup') }}" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {{ field('name', 'Name', 'user', value=form.get('name', ''), errors=errors, autocomplete='name', extra='maxlength="100"') }}
+      {{ field('age', 'Age', 'calendar', type='number', value=form.get('age', ''), errors=errors, extra='min="1" max="120"') }}
+      {{ field('address', 'Address', 'pin', value=form.get('address', ''), errors=errors, autocomplete='street-address', extra='maxlength="255"') }}
+      {{ field('email', 'Email', 'mail', type='email', value=form.get('email', ''), errors=errors, autocomplete='email', extra='maxlength="255"') }}
+      {{ field('mobile', 'Mobile Number', 'phone', type='tel', value=form.get('mobile', ''), errors=errors, autocomplete='tel', extra='maxlength="20"') }}
+      {{ field('password', 'Password', 'lock', type='password', errors=errors, autocomplete='new-password', extra='minlength="8" maxlength="128"') }}
+      <button class="btn btn-primary btn-block" type="submit">Sign Up</button>
+    </form>
+    <p class="auth-switch">Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% from "_icons.html" import logo, icon %}
+<header class="topbar">
+  <div class="topbar-inner">
+    {{ logo() }}
+    <nav class="nav">
+      <a class="nav-link {{ 'active' if page == 'dashboard' }}" href="{{ url_for('files.dashboard') }}">Dashboard</a>
+      <a class="nav-link {{ 'active' if page == 'files' }}" href="{{ url_for('files.my_files') }}">{{ icon('file', 16) }} My Files</a>
+      <div class="user-menu">
+        <button class="nav-link user-btn" type="button" aria-haspopup="true" aria-expanded="false">
+          {{ icon('user', 18) }}<span>{{ g.user.name.split()[0] }}</span>{{ icon('chevron', 14) }}
+        </button>
+        <div class="menu" hidden>
+          <div class="menu-meta">{{ g.user.email }}</div>
+          <form method="post" action="{{ url_for('auth.logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="menu-item" type="submit">{{ icon('logout', 16) }} Log out</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% from "_files_table.html" import files_table %}
+{% block title %}Dashboard · FilePortal{% endblock %}
+{% block body %}
+{% include "_nav.html" %}
+<main class="container">
+  <h1 class="page-title">Dashboard</h1>
+  <p class="muted">Upload, download and manage your files.</p>
+  {% include "_flash.html" %}
+
+  <div class="upload-grid">
+    {% for slot in (1, 2) %}
+    <form class="dropzone" method="post" action="{{ url_for('files.upload', slot=slot) }}" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {{ icon('upload', 30) }}
+      <h2>Upload File {{ slot }}</h2>
+      <p class="hint">PDF, PNG or JPEG</p>
+      <input class="file-input" id="file{{ slot }}" type="file" name="file{{ slot }}" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg" hidden>
+      <div class="drop-actions">
+        <label class="btn btn-outline" for="file{{ slot }}">Choose File</label>
+        <button class="btn btn-primary" type="submit" hidden>Upload</button>
+      </div>
+      <p class="chosen" aria-live="polite"></p>
+    </form>
+    {% endfor %}
+  </div>
+
+  <a class="btn btn-primary btn-dl" href="{{ url_for('files.download_test_file') }}">{{ icon('download', 16) }} Download Test File</a>
+
+  <h2 class="section-title">Your Uploaded Files</h2>
+  {{ files_table(files, 'dashboard') }}
+</main>
+{% endblock %}
