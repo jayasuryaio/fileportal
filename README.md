@@ -10,7 +10,7 @@ A small full-stack web app: **sign up → log in → upload / download files**.
 | Hosting   | Railway (app + MySQL plugin + persistent volume)         |
 
 - **Live app:** https://fileportal-production.up.railway.app
-- **Repository:** `<GITHUB_URL>`
+- **Repository:** https://github.com/jayasuryaio/fileportal
 
 ---
 
@@ -104,7 +104,7 @@ then `mysql -u fileportal -p fileportal < schema.sql` (or just start the app).
 **Prerequisites:** Python 3.12+ and a MySQL 8 server (`brew install mysql@8.4`, Docker, or any instance).
 
 ```bash
-git clone <GITHUB_URL> && cd fileportal
+git clone https://github.com/jayasuryaio/fileportal && cd fileportal
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
