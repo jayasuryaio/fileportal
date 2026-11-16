@@ -151,14 +151,14 @@ The tests wipe the tables in `fileportal_test` only (override with `TEST_DB_NAME
 **Platform:** [Railway](https://railway.com) — one project with three pieces:
 
 1. **App service** – built from this repo (Railpack detects Python; `railway.json` sets the start command + health check).
-2. **MySQL service** – Railway's MySQL database.
+2. **MySQL + phpMyAdmin** – deployed from the Railway template "phpMyAdmin + MySQL (fixes the Apache crash loop)". phpMyAdmin is served on its own public URL and requires a MySQL login (user `root`, password = the `MYSQL_ROOT_PASSWORD` variable of the `mysql` service).
 3. **Volume** – mounted at `/data` on the app service so uploads survive redeploys.
 
 App service variables:
 
 | Variable | Value |
 |---|---|
-| `DATABASE_URL` | `${{MySQL.MYSQL_URL}}` (reference to the MySQL service) |
+| `DATABASE_URL` | `mysql://root:${{mysql.MYSQL_ROOT_PASSWORD}}@${{mysql.RAILWAY_PRIVATE_DOMAIN}}:3306/fileportal` (private network; the app creates the `fileportal` database and tables on first start) |
 | `SECRET_KEY` | long random string |
 | `UPLOAD_DIR` | `/data/uploads` |
 
@@ -168,7 +168,7 @@ Deploy with the CLI:
 npm i -g @railway/cli      # or: brew install railway
 railway login
 railway init               # create project
-railway add --database mysql
+# deploy the template "phpMyAdmin + MySQL" (dashboard: New → Template)
 railway add --service fileportal
 railway volume add --mount-path /data      # on the app service
 railway variables --set 'DATABASE_URL=${{MySQL.MYSQL_URL}}' \

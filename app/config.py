@@ -20,7 +20,7 @@ def _db_settings() -> dict:
             "port": p.port or 3306,
             "user": unquote(p.username or ""),
             "password": unquote(p.password or ""),
-            "database": (p.path or "/").lstrip("/"),
+            "database": (p.path or "/").lstrip("/") or "fileportal",
         }
     env = os.getenv
     return {

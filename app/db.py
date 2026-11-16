@@ -56,12 +56,26 @@ def execute(sql: str, args=()) -> int:
         return cur.lastrowid
 
 
-def init_schema(cfg: dict, retries: int = 10, delay: float = 3.0) -> None:
-    """Create tables if missing. Retries so the app survives a slow-starting DB."""
+def _ensure_database(cfg: dict) -> None:
+    """Create the application database if the server doesn't have it yet."""
+    server_cfg = {k: v for k, v in cfg.items() if k != "database"}
+    conn = _connect(server_cfg)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                f"CREATE DATABASE IF NOT EXISTS `{cfg['database']}` "
+                "CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    finally:
+        conn.close()
+
+
+def init_schema(cfg: dict, retries: int = 20, delay: float = 3.0) -> None:
+    """Create database + tables if missing. Retries so the app survives a slow-starting DB."""
     statements = [s.strip() for s in SCHEMA_FILE.read_text().split(";") if s.strip()]
     last_err = None
     for _ in range(retries):
         try:
+            _ensure_database(cfg)
             conn = _connect(cfg)
             try:
                 with conn.cursor() as cur:
